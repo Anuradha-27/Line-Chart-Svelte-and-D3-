@@ -21,10 +21,10 @@
     background: white;
     border: 1px solid rgba(0, 0, 0, 0.5);
     pointer-events: none;
-    transition: top 300ms ease, left 300ms ease;
+    transition: top 100ms ease, left 100ms ease;
   }
   h1 {
-    font-weight: 700;
+    font-weight: 300;
     margin-bottom: 0.25rem;
   }
 </style>

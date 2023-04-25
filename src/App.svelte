@@ -6,8 +6,19 @@
 </script>
 
 <section>
-  <LineChart {data} />
-  <LineChart data={data1} />
-  <LineChart data={data2} />
+  <div class="container mb-5">
+    <LineChart {data} />
+  </div>
+  <div class="container mb-5">
+    <LineChart data={data1} />
+  </div>
+  <div class="container mb-5">
+    <LineChart data={data2} />
+  </div>
 </section>
- 
+
+<style>
+  .container {
+    border: 1px solid black;
+  }
+</style>
