@@ -6,7 +6,7 @@
   import YAxis from "./YAxis.svelte";
   import Header from "./shared/Header.svelte";
   import Tooltip from "./Tooltip.svelte";
-  import config from "./config/config";
+  export let config
   export let data;
   let width = config.chart.width;
   let height = config.chart.height;
@@ -48,7 +48,7 @@
     <YAxis {height} {yScale} {width} {margin} {yTicks} />
     <g class="circles" transform="translate({margin.left} {margin.top})">
       <text transform={`translate(${-8},${innerHeight / 1.5}) rotate(-90)`}
-        >Number of hours
+        >{config.labels.yAxis}
       </text>
       <path
         d={path(data.sort((a, b) => a.grade - b.grade))}
@@ -73,7 +73,9 @@
           tabIndex="0"
         />
       {/each}
-      <text x={innerWidth / 1.5} y={innerHeight + 40}>Grades</text>
+      <text x={innerWidth / 1.5} y={innerHeight + 40}
+        >{config.labels.xAxis}</text
+      >
     </g>
   </svg>
   {#if hoveredData}

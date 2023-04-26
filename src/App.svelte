@@ -1,5 +1,8 @@
 <script>
   import LineChart from "./components/LineChart.svelte";
+  import ScatterPlot from "./components/ScatterPlot.svelte";
+  import BarChart from "./components/BarChart.svelte";
+  import config from "./components/config/config";
   import data from "./data/data";
   import data1 from "./data/data1";
   import data2 from "./data/data2";
@@ -7,13 +10,13 @@
 
 <section>
   <div class="container mb-5">
-    <LineChart {data} />
+    <ScatterPlot {data} {config}/>
   </div>
   <div class="container mb-5">
-    <LineChart data={data1} />
+    <BarChart {data} {config} />
   </div>
   <div class="container mb-5">
-    <LineChart data={data2} />
+    <LineChart {data} {config} />
   </div>
 </section>
 

@@ -13,5 +13,15 @@ const lineChart = {
     xTicks: 10,
     yTicks: 10,
   },
+  labels: {
+    xAxis:"Grades",
+    yAxis:"Number of hours studied"
+  },
+  padding: {
+    top: 20,
+    right: 10,
+    left: 10,
+    bottom: 20,
+  }
 };
 module.exports = lineChart;
