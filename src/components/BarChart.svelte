@@ -2,11 +2,10 @@
   import * as d3 from "d3";
   import { scaleLinear } from "d3-scale";
   import { max } from "d3-array";
-  import XAxis from "./XAxis.svelte";
-  import YAxis from "./YAxis.svelte";
+  import XAxis from "./shared/XAxis.svelte";
+  import YAxis from "./shared/YAxis.svelte";
   import Header from "./shared/Header.svelte";
   import Tooltip from "./Tooltip.svelte";
-  import data1 from "../data/data1";
   export let config
   export let data;
   let width = config.chart.width;
