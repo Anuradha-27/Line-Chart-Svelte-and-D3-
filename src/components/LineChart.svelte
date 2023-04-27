@@ -6,31 +6,37 @@
   import YAxis from "./shared/YAxis.svelte";
   import Header from "./shared/Header.svelte";
   import Tooltip from "./Tooltip.svelte";
-  export let config
-  export let data;
-  let width = config.chart.width;
-  let height = config.chart.height;
+  export let dataConfig;
+  let data=dataConfig.data;
+  let width = dataConfig.chart.width;
+  let height = dataConfig.chart.height;
   let hoveredData;
   $: console.log(hoveredData);
+  for (let i = 0; i < data.length; i++) {
+    
+    data[i].xKey=data[i][`${dataConfig.xKey}`]
+    data[i].yKey=data[i][`${dataConfig.yKey}`]
+  }
+  console.log(data)
   let path = d3
     .line()
-    .x((d) => xScale(d.grade))
-    .y((d) => yScale(d.hours))
+    .x((d) => xScale(d.xKey))
+    .y((d) => yScale(d.yKey))
     .curve(d3.curveLinear);
   const margin = {
-    top: config.margin.top,
-    right: config.margin.right,
-    left: config.margin.left,
-    bottom: config.margin.bottom,
+    top: dataConfig.margin.top,
+    right: dataConfig.margin.right,
+    left: dataConfig.margin.left,
+    bottom: dataConfig.margin.bottom,
   };
   const xScale = scaleLinear()
-    .domain([0, max(data, (d) => d.grade)])
+    .domain([0, max(data, (d) => d.xKey)])
     .range([0, width - margin.left - margin.right]);
   const yScale = scaleLinear()
-    .domain([0, max(data, (d) => d.hours)])
+    .domain([0, max(data, (d) => d.yKey)])
     .range([height - margin.top - margin.bottom, 0]);
-  let xTicks = xScale.ticks(config.range.xTicks);
-  let yTicks = yScale.ticks(config.range.yTicks);
+  let xTicks = xScale.ticks(dataConfig.range.xTicks);
+  let yTicks = yScale.ticks(dataConfig.range.yTicks);
   let innerHeight = height - margin.top - margin.bottom;
   let innerWidth = width - margin.left - margin.right;
 </script>
@@ -47,34 +53,44 @@
     <XAxis {height} {xScale} {margin} {xTicks} />
     <YAxis {height} {yScale} {width} {margin} {yTicks} />
     <g class="circles" transform="translate({margin.left} {margin.top})">
-      <text transform={`translate(${-8},${innerHeight / 1.5}) rotate(-90)`}
-        >{config.labels.yAxis}
+      <text
+        transform={`translate(${dataConfig.text.translate},${
+          innerHeight / dataConfig.text.height
+        }) rotate(-90)`}
+        >{dataConfig.labels.yAxis}
       </text>
       <path
-        d={path(data.sort((a, b) => a.grade - b.grade))}
-        fill="none"
-        stroke="black"
-        stroke-width="1"
+        d={path(data.sort((a, b) => a.xKey - b.xKey))}
+        fill={dataConfig.chart.fillNone}
+        stroke={dataConfig.chart.stroke}
+        stroke-width={dataConfig.chart.strokeWidth}
       />
-      {#each data.sort((a, b) => a.grade - b.grade) as student}
+      {#each data.sort((a, b) => a.xKey - b.xKey) as data}
         <circle
-          cx={xScale(student.grade)}
-          cy={yScale(student.hours)}
-          r={hoveredData && hoveredData == student ? "8" : "5"}
-          opacity={hoveredData ? (hoveredData == student ? "1" : ".3") : "1"}
-          fill="purple"
-          stroke="black"
+          cx={xScale(data.xKey)}
+          cy={yScale(data.yKey)}
+          r={hoveredData && hoveredData == data
+            ? dataConfig.scatter.beforeHovered
+            : dataConfig.scatter.onHovered}
+          opacity={hoveredData
+            ? hoveredData == data
+              ? dataConfig.scatter.opacity
+              : dataConfig.scatter.opacityOnHovered
+            : dataConfig.scatter.opacity}
+          fill={dataConfig.chart.fill}
+          stroke={dataConfig.chart.stroke}
           on:mouseover={() => {
-            hoveredData = student;
+            hoveredData = data;
           }}
           on:focus={() => {
-            hoveredData = student;
+            hoveredData = data;
           }}
-          tabIndex="0"
+          tabIndex={dataConfig.scatter.tabIndex}
         />
       {/each}
-      <text x={innerWidth / 1.5} y={innerHeight + 40}
-        >{config.labels.xAxis}</text
+      <text
+        x={innerWidth / dataConfig.text.height}
+        y={innerHeight + dataConfig.text.height1}>{dataConfig.labels.xAxis}</text
       >
     </g>
   </svg>
